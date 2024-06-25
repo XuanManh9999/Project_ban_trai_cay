@@ -23,4 +23,8 @@ urlpatterns = [
     path('home/', views.home, name="home"),
     path('auth/', views.auth, name="auth"),
     path('content/', views.content, name="content"),
+    path('login/', views.login, name="login"),
+    path('register/', views.register, name="register"),
+    path('forgot-password/', views.forgot_password, name="forgot_password"),
+    
 ]

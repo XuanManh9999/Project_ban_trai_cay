@@ -1,0 +1,85 @@
+{% extends "auth/base.html" %} {% load static %} {% block login %}
+<section>
+  <div class="form-box">
+    <div class="form-value">
+      <form action="dang-nhap" method="post">
+        <h2>Login</h2>
+        <div class="inputbox">
+          <ion-icon name="mail-outline"></ion-icon>
+          <input type="email" name="email" required />
+          <label>Email</label>
+        </div>
+        <div class="inputbox">
+          <ion-icon name="lock-closed-outline"></ion-icon>
+          <input type="password" name="password" required />
+          <label>Password</label>
+        </div>
+        <div class="forget justify-content-between">
+          <label><input type="checkbox" />Remember Me</label>
+          <label><a href="/forgot-password">Forget Password?</a></label>
+        </div>
+        <button type="submit">Log in</button>
+        <div class="register">
+          <p>Don't have an account? <a href="/register">Register</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Toast container -->
+<div id="toast">
+  <ion-icon name=""></ion-icon>
+  <div>
+    <div class="toast-title"></div>
+    <div class="toast-message"></div>
+  </div>
+</div>
+
+<script
+  type="module"
+  src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+></script>
+<script
+  nomodule
+  src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+></script>
+<script>
+  document.addEventListener("DOMContentLoaded", (event) => {
+    const toast = document.getElementById("toast");
+    const icon = toast.querySelector("ion-icon");
+    const title = toast.querySelector(".toast-title");
+    const message = toast.querySelector(".toast-message");
+
+    const toastMessage = '<%= request.getAttribute("message") %>';
+    const toastTitle = '<%= request.getAttribute("title") %>';
+    const toastIcon = '<%= request.getAttribute("icon") %>';
+    const messageType = '<%= request.getAttribute("messageType") %>';
+    const redirect = '<%= request.getAttribute("redirect") %>';
+
+    if (toastMessage && toastTitle && toastIcon) {
+      icon.setAttribute("name", toastIcon);
+      title.textContent = toastTitle;
+      message.textContent = toastMessage;
+
+      // Remove all previous messageType classes
+      toast.classList.remove("success", "error");
+
+      // Add the current messageType class
+      if (messageType) {
+        toast.classList.add(messageType);
+      }
+
+      toast.classList.add("show");
+
+      // Remove the show class after 3 seconds
+      setTimeout(function () {
+        toast.classList.remove("show");
+        if (redirect === "true") {
+          window.location.href = "/Project_JSP_Servlet_war_exploded/";
+        }
+      }, 3000);
+    }
+  });
+</script>
+{% endblock login %}
