@@ -121,23 +121,7 @@
             >
               <i class="fas fa-user fa-2x text-white"></i>
             </button>
-            <ul class="dropdown-menu text-center login-margin">
-              <% HttpSession sc = request.getSession(); String IDUser = (String)
-              sc.getAttribute("IDUser"); String fullname = (String)
-              sc.getAttribute("fullname"); %>
-
-              <li>
-                <% if (IDUser != null) { out.print(fullname != null ? fullname :
-                ""); } %>
-              </li>
-
-              <% if (IDUser != null) { // If IDUser is not null, show Sign Out
-              %>
-              <li><a class="dropdown-item" href="signout">Sign Out</a></li>
-              <% } else { // If IDUser is null, show Login %>
-              <li><a class="dropdown-item" href="dang-nhap">Login</a></li>
-              <% } %>
-            </ul>
+            <ul class="dropdown-menu text-center login-margin"></ul>
           </div>
         </div>
       </div>
@@ -379,8 +363,8 @@
                 <div class="col-md-6 col-lg-4 col-xl-3">
                   <div class="rounded position-relative fruite-item">
                     <div class="fruite-img">
-                      <img src={% static "app/images/fruite-item-5.jpg" %}
-                      class="img-fluid w-100 rounded-top" alt="" />
+                      <img class="img-fluid w-100 rounded-top" src={% static
+                      "app/images/fruite-item-5.jpg" %} alt="av" />
                     </div>
                     <div
                       class="text-white bg-secondary px-3 py-1 rounded position-absolute"
@@ -539,8 +523,8 @@
                 <div class="col-md-6 col-lg-4 col-xl-3">
                   <div class="rounded position-relative fruite-item">
                     <div class="fruite-img">
-                      <img src={% static "app/images/fruite-item-1.jpg" %}
-                      class="img-fluid w-100 rounded-top" alt="" />
+                      <img src={% static "app/images/featur" %} class="img-fluid
+                      w-100 rounded-top" alt="" />
                     </div>
                     <div
                       class="text-white bg-secondary px-3 py-1 rounded position-absolute"
@@ -923,7 +907,7 @@
                 <div class="col-md-6 col-lg-4 col-xl-3">
                   <div class="rounded position-relative fruite-item">
                     <div class="fruite-img">
-                      <img src={% static " app/images/fruite-item-1.jpg" %}
+                      <img src={% static "app/images/fruite-item-1.jpg" %}
                       class="img-fluid w-100 rounded-top" alt="" />
                     </div>
                     <div
@@ -971,11 +955,11 @@
           <div
             class="service-item bg-secondary rounded border border-secondary"
           >
-            <img src={% static "app/images/featur-1.jpg" %} class="img-fluid
-            rounded-top w-100" alt="" />
+            <img src={% static "app/images/fruite-item-5.jpg" %}
+            class="img-fluid rounded-top w-100" alt="" />
             <div class="px-4 rounded-bottom">
               <div class="service-content bg-primary text-center p-4 rounded">
-                <h5 class="text-white">Fresh Apples</h5>
+                <h5 class="text-white">Freshapples</h5>
                 <h3 class="mb-0">20% OFF</h3>
               </div>
             </div>
@@ -1480,7 +1464,7 @@
       </div>
       <div class="col-md-6 col-lg-6 col-xl-3">
         <div class="text-center">
-          <img src={% static " app/images/fruite-item-1.jpg" %} class="img-fluid
+          <img src={% static "app/images/fruite-item-1.jpg" %} class="img-fluid
           rounded" alt="" />
           <div class="py-4">
             <a href="#" class="h5">Organic Tomato</a>
@@ -1503,7 +1487,7 @@
       </div>
       <div class="col-md-6 col-lg-6 col-xl-3">
         <div class="text-center">
-          <img src={% static " app/images/fruite-item-2.jpg" %} class="img-fluid
+          <img src={% static "app/images/fruite-item-2.jpg" %} class="img-fluid
           rounded" alt="" />
           <div class="py-4">
             <a href="#" class="h5">Organic Tomato</a>
@@ -1698,8 +1682,8 @@
           </div>
           <div class="d-flex align-items-center flex-nowrap">
             <div class="bg-secondary rounded">
-              <img src={% static "views/web/img/1.jpg" %} class="img-fluid
-              rounded" style="width: 100px; height: 100px" alt="" />
+              <img src={% static "app/images/1.jpg" %} class="img-fluid rounded"
+              style="width: 100px; height: 100px" alt="" />
             </div>
             <div class="ms-4 d-block">
               <h4 class="text-dark">Xuân Mạnh</h4>
@@ -1843,9 +1827,7 @@
     </div>
   </div>
 </div>
-<!-- Copyright End -->
 
-<!-- Back to Top -->
 <a
   href="#"
   class="btn btn-primary border-3 border-primary rounded-circle back-to-top"
