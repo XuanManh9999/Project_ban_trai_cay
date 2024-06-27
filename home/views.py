@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from home.models import NguoiDung
 def home(request):
     data = NguoiDung.objects.all()
+    print(data)
     # tra ve template 
     return render(request, 'app/content.html', {'data': data})
 
