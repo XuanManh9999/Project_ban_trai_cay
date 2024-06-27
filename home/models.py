@@ -1,4 +1,4 @@
-﻿# This is an auto-generated Django model module.
+# This is an auto-generated Django model module.
 # You'll have to do the following manually to clean this up:
 #   * Rearrange models' order
 #   * Make sure each model has one field with primary_key=True
@@ -86,6 +86,18 @@ class AuthUserUserPermissions(models.Model):
         unique_together = (('user', 'permission'),)
 
 
+class ChiTietDatHang(models.Model):
+    id_nguoi_dung = models.ForeignKey('NguoiDung', models.DO_NOTHING, db_column='ID_nguoi_dung', blank=True, null=True)  # Field name made lowercase.
+    id_san_pham = models.ForeignKey('SanPham', models.DO_NOTHING, db_column='ID_san_pham', blank=True, null=True)  # Field name made lowercase.
+    so_luong = models.IntegerField(blank=True, null=True)
+    ghi_chu = models.TextField(blank=True, null=True)
+    id_dat_hang = models.ForeignKey('DatHang', models.DO_NOTHING, db_column='ID_dat_hang', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'chi_tiet_dat_hang'
+
+
 class DatHang(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     id_nguoi_dung = models.ForeignKey('NguoiDung', models.DO_NOTHING, db_column='ID_nguoi_dung', blank=True, null=True)  # Field name made lowercase.
@@ -146,18 +158,6 @@ class DjangoSession(models.Model):
         db_table = 'django_session'
 
 
-class GioHang(models.Model):
-    id_gio_hang = models.AutoField(db_column='ID_gio_hang', primary_key=True)  # Field name made lowercase.
-    id_san_pham = models.ForeignKey('SanPham', models.DO_NOTHING, db_column='ID_san_pham', blank=True, null=True)  # Field name made lowercase.
-    id_nguoi_dung = models.ForeignKey('NguoiDung', models.DO_NOTHING, db_column='ID_nguoi_dung', blank=True, null=True)  # Field name made lowercase.
-    so_luong = models.IntegerField(blank=True, null=True)
-    ngay_them = models.DateTimeField()
-
-    class Meta:
-        managed = False
-        db_table = 'gio_hang'
-
-
 class LoaiSanPham(models.Model):
     id_san_pham = models.OneToOneField('SanPham', models.DO_NOTHING, db_column='ID_san_pham', primary_key=True)  # Field name made lowercase. The composite primary key (ID_san_pham, loai_san_pham) found, that is not supported. The first column is selected.
     loai_san_pham = models.CharField(max_length=255)
@@ -202,17 +202,6 @@ class SanPham(models.Model):
     class Meta:
         managed = False
         db_table = 'san_pham'
-
-
-class SanPhamDatHang(models.Model):
-    id_san_pham = models.OneToOneField(SanPham, models.DO_NOTHING, db_column='ID_san_pham', primary_key=True)  # Field name made lowercase. The composite primary key (ID_san_pham, ID_dat_hang) found, that is not supported. The first column is selected.
-    id_dat_hang = models.ForeignKey(DatHang, models.DO_NOTHING, db_column='ID_dat_hang')  # Field name made lowercase.
-    so_luong = models.FloatField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'san_pham_dat_hang'
-        unique_together = (('id_san_pham', 'id_dat_hang'),)
 
 
 class TrangThaiNguoiDung(models.Model):
