@@ -22,3 +22,18 @@ def register(request):
 def forgot_password(request):
     context = {}
     return render(request, 'auth/forgot-password.html')
+def cart(request):
+    context = {}
+    return render(request, 'app/cart.html')
+def checkout(request):
+    context = {}
+    return render(request, 'app/checkout.html')
+def contact(request):
+    context = {}
+    return render(request, 'app/contact.html')
+def shop(request):
+    context = {}
+    return render(request, 'app/shop.html')
+def shop_details(request):
+    context = {}
+    return render(request, 'app/shop_detail.html')
