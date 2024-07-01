@@ -1,12 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 # Create your views here.
-from home.models import NguoiDung
 def home(request):
-    data = NguoiDung.objects.all()
-    print(data)
     # tra ve template 
-    return render(request, 'app/content.html', {'data': data})
+    return render(request, 'app/content.html')
 
 def auth(request):
     context = {}

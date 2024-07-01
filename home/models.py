@@ -159,13 +159,12 @@ class DjangoSession(models.Model):
 
 
 class LoaiSanPham(models.Model):
-    id_san_pham = models.OneToOneField('SanPham', models.DO_NOTHING, db_column='ID_san_pham', primary_key=True)  # Field name made lowercase. The composite primary key (ID_san_pham, loai_san_pham) found, that is not supported. The first column is selected.
-    loai_san_pham = models.CharField(max_length=255)
+    ten_loai_san_pham = models.CharField(max_length=255)
 
     class Meta:
         managed = False
         db_table = 'loai_san_pham'
-        unique_together = (('id_san_pham', 'loai_san_pham'),)
+        unique_together = (('id', 'ten_loai_san_pham'),)
 
 
 class NguoiDung(models.Model):
@@ -202,6 +201,15 @@ class SanPham(models.Model):
     class Meta:
         managed = False
         db_table = 'san_pham'
+
+
+class SanPhamAndLoaiSanPham(models.Model):
+    id_san_pham = models.ForeignKey(SanPham, models.DO_NOTHING, db_column='ID_san_pham', blank=True, null=True)  # Field name made lowercase.
+    id_loai_san_pham = models.ForeignKey(LoaiSanPham, models.DO_NOTHING, db_column='ID_loai_san_pham', blank=True, null=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'san_pham_and_loai_san_pham'
 
 
 class TrangThaiNguoiDung(models.Model):
