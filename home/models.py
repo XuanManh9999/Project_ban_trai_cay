@@ -101,12 +101,12 @@ class ChiTietDatHang(models.Model):
 class DatHang(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     id_nguoi_dung = models.ForeignKey('NguoiDung', models.DO_NOTHING, db_column='ID_nguoi_dung', blank=True, null=True)  # Field name made lowercase.
-    id_san_pham = models.ForeignKey('SanPham', models.DO_NOTHING, db_column='ID_san_pham', blank=True, null=True)  # Field name made lowercase.
-    so_luong = models.IntegerField(blank=True, null=True)
     ghi_chu = models.TextField(blank=True, null=True)
     ma_giam_gia = models.CharField(max_length=50, blank=True, null=True)
     trang_thai_dat_hang = models.CharField(max_length=255, blank=True, null=True)
     ngay_them = models.DateTimeField()
+    dia_chi = models.TextField(blank=True, null=True)
+    sdt = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False
