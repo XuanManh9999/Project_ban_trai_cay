@@ -1,5 +1,11 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import NguoiDung
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib import messages
+# from home import 
 # Create your views here.
 def home(request):
     # tra ve template 
@@ -12,7 +18,11 @@ def content(request):
     context = {}
     return render(request, 'app/content.html')
 def login(request):
-    context = {}
+    if request.method == 'POST':
+       email = request.POST.get('email')
+       password = request.POST.get('password')  
+       print(email, password)
+    
     return render(request, 'auth/login.html')
 def register(request):
     context = {}
@@ -35,3 +45,28 @@ def shop(request):
 def shop_details(request):
     context = {}
     return render(request, 'app/shop_detail.html')
+def home_admin(request):
+    context = {}
+    return render(request, 'manage_app/base.html')
+def manage_user(request):
+    data = NguoiDung.objects.all() # lay tat ca du lieu trong bang nguoi dung
+    context = {
+        'data': data
+    }
+    return render(request, 'manage_app/manage_user.html', context)
+def manage_product(request):
+    context = {}
+    return render(request, 'manage_app/manage_product.html')
+def manage_order(request):
+    context = {}
+    return render(request, 'manage_app/manage_order.html')
+def manage_report(request):
+    context = {}
+    return render(request, 'manage_app/manage_report.html')
+
+    
+
+
+    
+    
+    

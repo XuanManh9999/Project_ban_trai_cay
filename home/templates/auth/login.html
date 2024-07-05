@@ -2,7 +2,8 @@
 <section>
   <div class="form-box">
     <div class="form-value">
-      <form action="dang-nhap" method="post">
+      <form action={% url 'login' %} method="post">
+        {% csrf_token %}
         <h2>Login</h2>
         <div class="inputbox">
           <ion-icon name="mail-outline"></ion-icon>

@@ -1,0 +1,10 @@
+{% extends "manage_app/base.html" %}
+{% load static %}
+{% block block_user %}
+    <h1>Quản lý người dùng</h1>
+    <ul>
+        {% for user in data %}
+            <li>{{ user.ten }}</li> 
+        {% endfor %}
+    </ul>
+{% endblock block_user %}
