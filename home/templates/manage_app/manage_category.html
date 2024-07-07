@@ -1,0 +1,96 @@
+{% extends 'manage_app/base.html'%} {% load static %} {% block block_category %}
+<main class="container">
+  <h1>Quản lý loại sản phẩm</h1>
+  <!-- START FORM -->
+  {% if messages %} {% for message in messages %}
+  <div class="alert alert-{{ message.tags }}">
+    <strong>{{ message }}</strong>
+  </div>
+  {% endfor %} {% endif %}
+  <form action="{% url 'manage-category' %}" method="post">
+    {% csrf_token %}
+    <div class="my-3 p-3 bg-body rounded shadow-sm">
+      <div class="mb-3 row">
+        <label for="nim" class="col-sm-2 col-form-label">ID:</label>
+        <div class="col-sm-10">
+          <input
+            type="number"
+            class="form-control"
+            name="id"
+            id="ID"
+            readonly
+          />
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="nama" class="col-sm-2 col-form-label"
+          >Tên loại sản phẩm:</label
+        >
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="name" id="name" />
+        </div>
+      </div>
+      <div class="mb-3 row">
+        <label for="jurusan" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+          <button type="submit" class="btn btn-primary" name="submit">
+            Lưu
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+  <!-- AKHIR FORM -->
+
+  <!-- START DATA -->
+  <div class="my-3 p-3 bg-body rounded shadow-sm">
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="col-md-1">ID</th>
+            <th class="col-md-3">Tên loại sản phẩm</th>
+            <th class="col-md-2">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% if categories %} {% for categorie in categories %}
+          <tr>
+            <td>{{ categorie.id }}</td>
+            <td>{{ categorie.ten_loai_san_pham }}</td>
+            <td class="d-flex" style="gap: 3px">
+              <button
+                class="btn btn-warning btn-sm"
+                onclick="editCategory('{{ categorie.id }}', '{{ categorie.ten_loai_san_pham }}')"
+              >
+                Edit
+              </button>
+              {% comment %} {% url 'delete-user' user.id %} {% endcomment %}
+              <form
+                action="{% url 'delete-category' categorie.id %}"
+                method="post"
+                onsubmit="return confirm('Bạn có chắc chắn muốn xóa người dùng này?');"
+              >
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm">Del</button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %} {% else %}
+          <tr>
+            <td colspan="12">Không có loại sản phẩm nào</td>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <!-- AKHIR DATA -->
+</main>
+<script>
+  function editCategory(id, name) {
+    document.getElementById("ID").value = id;
+    document.getElementById("name").value = name;
+  }
+</script>
+{%endblock block_category%}

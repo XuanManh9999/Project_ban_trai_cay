@@ -197,19 +197,10 @@ class SanPham(models.Model):
     hinh_anh_san_pham = models.CharField(max_length=255, blank=True, null=True)
     ngay_them = models.DateTimeField()
     ngay_cap_nhat = models.DateTimeField()
-
+    id_loai_san_pham = models.ForeignKey(LoaiSanPham, models.DO_NOTHING, db_column='ID_loai_san_pham', blank=True, null=True)  # Field name made lowercase.
     class Meta:
         managed = False
         db_table = 'san_pham'
-
-
-class SanPhamAndLoaiSanPham(models.Model):
-    id_san_pham = models.ForeignKey(SanPham, models.DO_NOTHING, db_column='ID_san_pham', blank=True, null=True)  # Field name made lowercase.
-    id_loai_san_pham = models.ForeignKey(LoaiSanPham, models.DO_NOTHING, db_column='ID_loai_san_pham', blank=True, null=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'san_pham_and_loai_san_pham'
 
 
 class TrangThaiNguoiDung(models.Model):

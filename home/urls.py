@@ -34,9 +34,16 @@ urlpatterns = [
     #admin
     path('manage-app/', views.home_admin, name="manage-app"),
     path('manage-user/', views.manage_user, name="manage-user"),
+    #delete user
+    path('delete-user/<int:id>', views.delete_user, name="delete-user"),
     path('manage-product/', views.manage_product, name="manage-product"),
+    #delete product
+    path('delete-product/<int:id>', views.delete_product, name="delete-product"),
     path('manage-order/', views.manage_order, name="manage-order"),
     path('manage-report/', views.manage_report, name="manage-report"),
+    path('manage-category/', views.manage_category, name="manage-category"),
+    #delete category
+    path('delete-category/<int:id>', views.delete_category, name="delete-category"),
     path('logout/', views.logout, name="logout")
     
     

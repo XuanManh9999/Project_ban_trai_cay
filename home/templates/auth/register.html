@@ -1,9 +1,16 @@
 {% extends 'auth/base.html'%} {% load static %} {% block register %}
 <section>
+ 
   <div class="form-box-1">
     <div class="form-value">
-      <form action="dang-ky" method="post">
+      <form action={% url 'register'%} method="post">
+        {% csrf_token %}
         <h2>Register</h2>
+        {%if messages%} {%for message in messages%}
+        <div class="alert alert-{{message.tags}}">
+          <strong>{{message}}</strong>
+        </div>
+        {%endfor%} {%endif%}
         <div class="inputbox">
           <ion-icon name="person-outline"></ion-icon>
           <input type="text" name="username" required />
