@@ -6,8 +6,26 @@ from django.contrib import messages
 # from home import 
 # Create your views here.
 def home(request):
-    # tra ve template 
-    return render(request, 'app/content.html')
+    #lay tat ca san pham
+    all_products = SanPham.objects.all()
+    #lay tat ca loai san pham
+    all_categories = LoaiSanPham.objects.all()
+    #fort mart all product tien 
+    for product in all_products:
+        product.gia_san_pham = "{:,.2f}".format(product.gia_san_pham)
+    # dem so luong san pham trong gio hang
+    total_quantity = 0
+    list_cart = request.session.get('list_products_in_cart')
+    if list_cart is not None:
+        for item in list_cart:
+            total_quantity = total_quantity + item['quantity']
+        
+    context = {
+        'products': all_products,
+        'categories': all_categories,
+        'total_quantity': total_quantity
+    }
+    return render(request, 'app/content.html', context)
 
 def auth(request):
     context = {}
@@ -61,11 +79,50 @@ def forgot_password(request):
             messages.success(request, 'Mật khẩu của bạn là: ' + user.mat_khau)
     return render(request, 'auth/forgot-password.html')
 def cart(request):
-    context = {}
-    return render(request, 'app/cart.html')
+    # lay danh sach san pham trong gio hang
+    list_cart = request.session.get('list_products_in_cart')
+    if list_cart is None:
+        list_cart = []
+    # tinh tong tien
+    total_price = 0
+    # dem so luong san pham
+    total_quantity = 0
+    for item in list_cart:
+        total_quantity = total_quantity + item['quantity']
+        total_price = total_price + item['price'] * item['quantity']
+    #format total price
+    total_price = "{:,.2f}".format(total_price)
+    # luu lai danh sach san pham trong gio hang
+    context = {
+        'list_cart': list_cart,
+        'total_price': total_price,
+        'total_quantity': total_quantity
+    }
+    return render(request, 'app/cart.html', context)
 def checkout(request):
-    context = {}
-    return render(request, 'app/checkout.html')
+    # kiem tra xem nguoi dung co dang nhap chua
+    if 'ID' not in request.session:
+        return redirect('login')
+    # lay danh sach san pham trong gio hang
+    list_cart = request.session.get('list_products_in_cart')
+    if list_cart is None:
+        list_cart = []
+    # tinh tong tien
+    total_price = 0
+    # dem so luong san pham
+    total_quantity = 0
+    for item in list_cart:
+        total_quantity = total_quantity + item['quantity']
+        total_price = total_price + item['price'] * item['quantity']
+    #format total price
+    total_price = "{:,.2f}".format(total_price)
+    # luu lai danh sach san pham trong gio hang
+    context = {
+        'list_cart': list_cart,
+        'total_price': total_price,
+        'total_quantity': total_quantity
+    }
+    return render(request, 'app/checkout.html', context)
 def contact(request):
     context = {}
     return render(request, 'app/contact.html')
@@ -228,6 +285,70 @@ def delete_category(request, id):
         messages.error(request, 'Xóa loại sản phẩm thất bại!')
     return redirect('manage-category')
 
+def add_product_to_cart(request, id):
+    # lay so luong san pham
+    quantity = 1
+    # lay danh sach san pham trong gio hang
+    list_cart = request.session.get('list_products_in_cart')
+    if list_cart is None:
+        list_cart = []
+    # lay thong tin san pham
+    product = SanPham.objects.filter(id=id).first()
+    # kiem tra xem san pham da co trong gio hang chua
+    for item in list_cart:
+        if item['id'] == id:
+            item['quantity'] = item['quantity'] + quantity
+            break
+    else:
+        list_cart.append({
+            'id': product.id,
+            'name': product.ten_san_pham,
+            'price': float(product.gia_san_pham),
+            'quantity': quantity,
+            'image': product.hinh_anh_san_pham
+        })
+    # luu lai danh sach san pham trong gio hang
+    request.session['list_products_in_cart'] = list_cart
+
+    for item in list_cart:
+        # in ra ten san pham va so luong
+        print(item['name'], item['quantity'])
+    
+    # dieu huong ve trang gio hang
+    return redirect('cart')
+
+def minus_product_to_cart(request, id):
+    # neu so luong bang 1 thi xoa san pham do khoi gio hang
+    # lay danh sach san pham trong gio hang
+    list_cart = request.session.get('list_products_in_cart')
+    if list_cart is None:
+        list_cart = []
+    for item in list_cart:
+        if item['id'] == id:
+            if item['quantity'] == 1:
+                list_cart.remove(item)
+            else:
+                item['quantity'] = item['quantity'] - 1
+            break
+    # luu lai danh sach san pham trong gio hang
+    request.session['list_products_in_cart'] = list_cart
+    # dieu huong ve trang gio hang
+    return redirect('cart')
+
+# xoa san pham khoi gio hang
+def delete_product_in_cart(request, id):
+    # lay danh sach san pham trong gio hang
+    list_cart = request.session.get('list_products_in_cart')
+    if list_cart is None:
+        list_cart = []
+    for item in list_cart:
+        if item['id'] == id:
+            list_cart.remove(item)
+            break
+    # luu lai danh sach san pham trong gio hang
+    request.session['list_products_in_cart'] = list_cart
+    # dieu huong ve trang gio hang
+    return redirect('cart')
 
 def logout(request):
     # xoa session
@@ -236,7 +357,4 @@ def logout(request):
 
     
 
-
-    
-    
     
