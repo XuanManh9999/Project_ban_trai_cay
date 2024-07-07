@@ -2,7 +2,13 @@
 <section>
   <div class="form-box">
     <div class="form-value">
-      <form action="dang-nhap" method="post">
+      {%if messages%} {%for message in messages%}
+      <div class="alert alert-{{message.tags}}">
+        <strong>{{message}}</strong>
+      </div>
+      {%endfor%} {%endif%}
+      <form action={% url 'login' %} method="post">
+        {% csrf_token %}
         <h2>Login</h2>
         <div class="inputbox">
           <ion-icon name="mail-outline"></ion-icon>
