@@ -1,5 +1,27 @@
-{% extends "manage_app/base.html" %}
-{%load static%}
-{% block  block_product%}
-    <h1>Thông kê doanh thu</h1>
+{% extends "manage_app/base.html" %} {%load static%} {% block block_product%}
+<div class="container">
+  <h3>Thống kê doanh thu</h3>
+  <table class="table table-striped table-bordered mt-3">
+    <thead>
+        <th>STT</th>
+        <th>Số đơn hàng thành công</th>
+        <th>Số đơn hàng hủy</th>
+        <th>Tổng số đơn hàng</th>
+        <th>Doanh thu</th>
+        <th>Số người dùng trong hệ thống</th>
+        <th>Số sản phẩm trong hệ thống</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td>1</td>
+            <td>{{total_order_success}}</td>
+            <td>{{total_order_cancel}}</td>
+            <td>{{total_order}}</td>
+            <td>{{total_revenue}}</td>
+            <td>{{total_user}}</td>
+            <td>{{total_product}}</td>
+        </tr>    
+    </tbody>
+  </table>
+</div>
 {%endblock block_product%}

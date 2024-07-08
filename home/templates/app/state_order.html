@@ -16,7 +16,7 @@ background-size: cover;" class="container-fluid page-header py-5">
     <div class="container mt-3">
         <table class="table table-striped table-bordered">
             <thead>
-                <tr>
+                <tr class="text-center">
                     <th>STT</th>
                     <th>Tên sản phẩm</th>
                     <th>Giá</th>
@@ -25,7 +25,7 @@ background-size: cover;" class="container-fluid page-header py-5">
                     <th>Địa chỉ nhận hàng</th>
                     <th>Số điện thoại</th>
                     <th>Trạng thái đơn hàng</th>
-                    <th>Đã nhận được hàng</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -41,9 +41,15 @@ background-size: cover;" class="container-fluid page-header py-5">
                             <td>{{ order.sdt }}</td>
                             <td>{{ order.trang_thai_dat_hang }}</td>
                             <td> 
-                                <div class="d-flex justify-content-center">
-                                    <a onclick="handleSubmid(event)" href="{% url 'da_nhan_hang' order_id=order.id %}" class="btn btn-primary text-white">Xác nhận</a>
-                                </div>
+                                {%if order.trang_thai_dat_hang == "Chờ xác nhận"%}
+                                    <form action={%url 'cancel_order_user' order_id=order.id %}>
+                                        <button type="submit" onclick="handleHuyDonHang(event)" class="btn btn-danger">Hủy đơn hàng</button>
+                                    </form>
+                                {%elif order.trang_thai_dat_hang == "Đã xác nhận"%}
+                                    <form action={% url 'da_nhan_hang' order_id=order.id %}>
+                                        <button type="submit" onclick="handleDaNhanHang(event)" class="btn btn-primary text-white">Đã nhận hàng</button>
+                                    </form>
+                                {%endif%}
                             </td>
                         </tr>
                     {% endfor %}
@@ -58,10 +64,15 @@ background-size: cover;" class="container-fluid page-header py-5">
        
     </div>
 <script>
-    function handleSubmid(event) {
-          
-
-
+    function handleHuyDonHang(event) {
+        if (!confirm("Bạn có chắc chắn muốn hủy đơn hàng này không?")) {
+            event.preventDefault();
+        }
+    }
+    function handleDaNhanHang(event) {
+        if (!confirm("Bạn có chắc chắn muốn đánh dấu đã nhận hàng không?.")) {
+            event.preventDefault();
+        }
     }
 </script>
 
