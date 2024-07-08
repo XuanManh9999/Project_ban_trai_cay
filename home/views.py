@@ -208,16 +208,21 @@ def manage_user(request):
     }
     return render(request, 'manage_app/manage_user.html', context)
 #da-nhan-duoc-hang
-def da_nhan_hang(request, order_id):
+def da_nhan_hang(request):
     #check dang nhap
     if 'ID' not in request.session:
         return redirect('login')
-    check =  DatHang.objects.filter(id=order_id).update(trang_thai_dat_hang='Giao hàng thành công')
-    if check:
-        messages.success(request, 'Đã nhận hàng thành công!')
-    else:
-        messages.error(request, 'Đã nhận hàng thất bại!')
-    return redirect('home')
+    if request.method == 'POST':
+        #lay thong tin tu form
+        order_id = request.POST.get('order_id')
+        danh_gia = request.POST.get('danh_gia')
+        #cap nhat trang thai don hang
+        check =  DatHang.objects.filter(id=order_id).update(trang_thai_dat_hang='Giao hàng thành công', danh_gia=danh_gia)
+        if check:
+            messages.success(request, 'Đã nhận hàng thành công!')
+        else:
+            messages.error(request, 'Đã nhận hàng thất bại!')
+    return redirect('state_order')
 
 
 
@@ -295,6 +300,7 @@ def delete_product(request, id):
     else:
         messages.error(request, 'Xóa sản phẩm thất bại!')
     return redirect('manage-product')
+
 def manage_order(request):
     if 'ID' not in request.session or request.session['vai_tro'] != 'admin':
         return redirect('login')
@@ -613,8 +619,8 @@ def state_order(request):
     id_nguoi_dung = request.session.get('ID')
     instance_nguoi_dung = NguoiDung.objects.filter(id=id_nguoi_dung).first()
     
-    #tim tất cả đơn hàng đang ở trạng thái chờ xác nhận
-    orders = DatHang.objects.all().exclude(trang_thai_dat_hang='Giao hàng thành công')
+    #tim tất cả đơn hàng đang ở trạng thái chờ xác nhận của người dùng
+    orders = DatHang.objects.filter(id_nguoi_dung=instance_nguoi_dung)
     
     # Lấy thông tin chi tiết đơn hàng
     list_order = []

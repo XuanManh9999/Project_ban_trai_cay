@@ -38,6 +38,7 @@
         <th>Trạng thái đơn hàng</th>
         <th>Địa chỉ</th>
         <th>Số điện thoại</th>
+        <th>Đánh giá</th>
         <th>Ngày tạo</th>
         <th>Hành động</th>
       </tr>
@@ -53,6 +54,7 @@
         <td>{{order.trang_thai_dat_hang}}</td>
         <td>{{order.dia_chi}}</td>
         <td>{{order.sdt}}</td>
+        <td>{{order.danh_gia}}</td>
         <td>{{order.ngay_them}}</td>
         <td>
           <div style="gap: 3px" class="d-flex justify-content-center">
@@ -121,7 +123,7 @@
       </tr>
       {% endfor %} {% else %}
       <tr>
-        <td colspan="10" class="text-center">Không có dữ liệu</td>
+        <td colspan="11" class="text-center">Không có dữ liệu</td>
       </tr>
       {% endif %}
       

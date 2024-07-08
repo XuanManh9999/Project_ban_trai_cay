@@ -33,7 +33,7 @@ urlpatterns = [
     path('shop-detail/', views.shop_details, name="shop_details"),
     path('cart-order/', views.cart_order, name="cart_order"),
     path('state-order/', views.state_order, name="state_order"),
-    path('submid-order/<int:order_id>/', views.da_nhan_hang, name='da_nhan_hang'),
+    path('submid-order/', views.da_nhan_hang, name='da_nhan_hang'),
     #admin
     path('manage-app/', views.home_admin, name="manage-app"),
     path('manage-user/', views.manage_user, name="manage-user"),
