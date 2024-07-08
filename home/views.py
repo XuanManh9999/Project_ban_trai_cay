@@ -174,7 +174,7 @@ def manage_user(request):
 #da-nhan-duoc-hang
 def da_nhan_hang(request, order_id):
     #check dang nhap
-    if 'ID' not in request.session or request.session['vai_tro'] != 'admin':
+    if 'ID' not in request.session:
         return redirect('login')
     check =  DatHang.objects.filter(id=order_id).update(trang_thai_dat_hang='Giao hàng thành công')
     if check:
