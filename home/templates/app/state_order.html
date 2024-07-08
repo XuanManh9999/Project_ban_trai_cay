@@ -46,7 +46,10 @@ background-size: cover;" class="container-fluid page-header py-5">
                                         <button type="submit" onclick="handleHuyDonHang(event)" class="btn btn-danger">Hủy đơn hàng</button>
                                     </form>
                                 {%elif order.trang_thai_dat_hang == "Đã xác nhận"%}
-                                    <form action={% url 'da_nhan_hang' order_id=order.id %}>
+                                    <form action={% url 'da_nhan_hang' %} method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="order_id" value="{{ order.id }}">
+                                        <textarea style="width: 100%" class="danh_gia" name="danh_gia" class="form-control mt-2" placeholder="Đánh giá"></textarea>
                                         <button type="submit" onclick="handleDaNhanHang(event)" class="btn btn-primary text-white">Đã nhận hàng</button>
                                     </form>
                                 {%endif%}
@@ -70,6 +73,8 @@ background-size: cover;" class="container-fluid page-header py-5">
         }
     }
     function handleDaNhanHang(event) {
+        let danh_gia = document.querySelector('.danh_gia');
+        danh_gia.style.display = "block"
         if (!confirm("Bạn có chắc chắn muốn đánh dấu đã nhận hàng không?.")) {
             event.preventDefault();
         }

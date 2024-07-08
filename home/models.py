@@ -109,6 +109,7 @@ class DatHang(models.Model):
     ngay_them = models.DateTimeField()
     dia_chi = models.TextField(blank=True, null=True)
     sdt = models.CharField(max_length=255, blank=True, null=True)
+    danh_gia = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         managed = False

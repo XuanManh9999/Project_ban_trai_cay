@@ -121,6 +121,7 @@ class Migration(migrations.Migration):
                 ('ngay_them', models.DateTimeField()),
                 ('dia_chi', models.TextField(blank=True, null=True)),
                 ('sdt', models.CharField(blank=True, max_length=255, null=True)),
+                ('danh_gia', models.CharField(blank=True, max_length=255, null=True)),
                 ('id_nguoi_dung', models.ForeignKey(db_column='ID_nguoi_dung', on_delete=django.db.models.deletion.DO_NOTHING, to='home.nguoidung')),
             ],
             options={
