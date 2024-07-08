@@ -87,7 +87,7 @@ DATABASES = {
             'charset': 'utf8mb4',
             "autocommit": True,
         }
-    }
+    },
 }
 
 
