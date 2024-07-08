@@ -1,0 +1,44 @@
+{%extends 'manage_app/base.html'%} {%load static custom_filters%} 
+{%block block_detail_product%}
+<div class="container">
+  <div class="d-flex justify-content-between">
+    <h3>Thông tin chi tiết của đơn hàng</h3>
+    <a href={%url 'manage-order'%} class="btn btn-primary">Về trang trước </a>    
+  </div>
+    <table class="table table-striped table-bordered mt-3">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Tên khách hàng</th>
+          <th>Tên sản phẩm</th>
+          <th>Số lượng</th>
+          <th>Giá</th>
+          <th>Ghi chú</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if products%} 
+        {% for product in products %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{product.id_nguoi_dung.ho_va_ten}}</td>
+            <td>{{product.id_san_pham.ten_san_pham}}</td>
+            <td>{{product.so_luong}}</td>
+            <td>{{product.id_san_pham.gia_san_pham|multiply:product.so_luong}}</td>
+            <td>{{product.ghi_chu}}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <td colspan="10" class="text-center">Không có sản phẩm nào</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+
+  </div>
+  <div>
+    <h3 class="text-center">Tổng tiền: {{total_price}} $</h3>
+  </div>
+</div>
+{% endblock block_detail_product %}

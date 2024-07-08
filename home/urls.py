@@ -43,6 +43,14 @@ urlpatterns = [
     #delete product
     path('delete-product/<int:id>', views.delete_product, name="delete-product"),
     path('manage-order/', views.manage_order, name="manage-order"),
+    #detail-order
+    path('detail-order/<int:order_id>/', views.detail_order, name='detail_order'),
+    # confirm_order
+    path('confirm-order/<int:order_id>/', views.confirm_order, name='confirm_order'),
+    # huy don hang
+    path('cancel-order/<int:order_id>/', views.cancel_order, name='cancel_order'),
+    #cancel_order_user
+    path('cancel-order-user/<int:order_id>/', views.cancel_order_user, name='cancel_order_user'),
     path('manage-report/', views.manage_report, name="manage-report"),
     path('manage-category/', views.manage_category, name="manage-category"),
     #delete category

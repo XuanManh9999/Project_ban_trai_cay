@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import NguoiDung, SanPham, LoaiSanPham, DatHang, ChiTietDatHang
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.db.models import Q
 # from home import 
 # Create your views here.
 def home(request):
@@ -138,9 +139,24 @@ def home_admin(request):
         return redirect('login')
     #dem so luong nguoi dung
     total_user = NguoiDung.objects.count()
+    # dem so don hang
+    total_order = DatHang.objects.count()
+    # tinh tong doanh thu tu cac don hang o tran thai giao hang thanh cong
+    total_revenue = 0
+    orders = DatHang.objects.filter(trang_thai_dat_hang='Giao hàng thành công')
+    for order in orders:
+        detail_orders = ChiTietDatHang.objects.filter(id_dat_hang=order)
+        for detail in detail_orders:
+            product = SanPham.objects.filter(id=detail.id_san_pham.id).first()
+            total_revenue = total_revenue + product.gia_san_pham * detail.so_luong
+    #dem so san pham
+    total_product = SanPham.objects.count()
     context = {
         'home_admin': '',
-        'total_user': total_user
+        'total_user': total_user,
+        'total_order': total_order,
+        'total_revenue': total_revenue,
+        'total_product': total_product
     }
     return render(request, 'manage_app/base.html', context)
 def manage_user(request):
@@ -167,8 +183,28 @@ def manage_user(request):
             # thong bao them moi thanh cong
             messages.success(request, 'Thêm mới thành công!')
     users = NguoiDung.objects.all() # lay tat ca du lieu trong bang nguoi dung
+     #dem so luong nguoi dung
+    total_user = NguoiDung.objects.count()
+    # dem so don hang
+    total_order = DatHang.objects.count()
+    # tinh tong doanh thu tu cac don hang o tran thai giao hang thanh cong
+    total_revenue = 0
+    orders = DatHang.objects.filter(trang_thai_dat_hang='Giao hàng thành công')
+    for order in orders:
+        detail_orders = ChiTietDatHang.objects.filter(id_dat_hang=order)
+        for detail in detail_orders:
+            product = SanPham.objects.filter(id=detail.id_san_pham.id).first()
+            total_revenue = total_revenue + product.gia_san_pham * detail.so_luong
+    #dem so san pham
+    total_product = SanPham.objects.count()
     context = {
-        'users': users
+        'users': users,
+        'total_user': total_user,
+        'total_order': total_order,
+        'total_revenue': total_revenue,
+        'total_product': total_product
+        
+
     }
     return render(request, 'manage_app/manage_user.html', context)
 #da-nhan-duoc-hang
@@ -228,10 +264,28 @@ def manage_product(request):
                 messages.success(request, 'Thêm mới sản phẩm thành công!')
             else:
                 messages.error(request, 'Thêm mới sản phẩm thất bại!')
-           
+       #dem so luong nguoi dung
+    total_user = NguoiDung.objects.count()
+    # dem so don hang
+    total_order = DatHang.objects.count()
+    # tinh tong doanh thu tu cac don hang o tran thai giao hang thanh cong
+    total_revenue = 0
+    orders = DatHang.objects.filter(trang_thai_dat_hang='Giao hàng thành công')
+    for order in orders:
+        detail_orders = ChiTietDatHang.objects.filter(id_dat_hang=order)
+        for detail in detail_orders:
+            product = SanPham.objects.filter(id=detail.id_san_pham.id).first()
+            total_revenue = total_revenue + product.gia_san_pham * detail.so_luong
+    #dem so san pham
+    total_product = SanPham.objects.count()     
     context = {
         'products': all_products,
-        'categories': all_categories
+        'categories': all_categories,
+        'total_user': total_user,
+        'total_order': total_order,
+        'total_revenue': total_revenue,
+        'total_product': total_product
+
     }
     return render(request, 'manage_app/manage_product.html', context)
 def delete_product(request, id):
@@ -244,14 +298,157 @@ def delete_product(request, id):
 def manage_order(request):
     if 'ID' not in request.session or request.session['vai_tro'] != 'admin':
         return redirect('login')
-    context = {}
-    return render(request, 'manage_app/manage_order.html')
+    orders_data = []
+    # lay tat ca don hang
+    if request.method == 'POST':
+        # lay thong tin tu form
+        status = request.POST.get('status')
+        if status == "Đã hoàn tất":
+            orders_data = DatHang.objects.filter(trang_thai_dat_hang='Giao hàng thành công')
+        elif status == "Đã xác nhận":
+            orders_data = DatHang.objects.filter(trang_thai_dat_hang='Đã xác nhận')
+        elif status == "Đã hủy":
+            orders_data = DatHang.objects.filter(trang_thai_dat_hang='Đã hủy')
+        elif status == "Chờ xác nhận":
+            orders_data = DatHang.objects.filter(trang_thai_dat_hang='Chờ xác nhận')
+    #in ra ten nguoi dung va ten san pham
+    else:
+        orders_data = DatHang.objects.filter(trang_thai_dat_hang='Chờ xác nhận')
+
+     #dem so luong nguoi dung
+    total_user = NguoiDung.objects.count()
+    # dem so don hang
+    total_order = DatHang.objects.count()
+    # tinh tong doanh thu tu cac don hang o tran thai giao hang thanh cong
+    total_revenue = 0
+    orders = DatHang.objects.filter(trang_thai_dat_hang='Giao hàng thành công')
+    for order in orders:
+        detail_orders = ChiTietDatHang.objects.filter(id_dat_hang=order)
+        for detail in detail_orders:
+            product = SanPham.objects.filter(id=detail.id_san_pham.id).first()
+            total_revenue = total_revenue + product.gia_san_pham * detail.so_luong
+    #dem so san pham
+    total_product = SanPham.objects.count()
+    context = {
+        'orders': orders_data,
+        'total_user': total_user,
+        'total_order': total_order,
+        'total_revenue': total_revenue,
+        'total_product': total_product
+    }
+    return render(request, 'manage_app/manage_order.html', context)
 def manage_report(request):
-    
     if 'ID' not in request.session or request.session['vai_tro'] != 'admin':
         return redirect('login')
-    context = {}
-    return render(request, 'manage_app/manage_report.html')
+        
+     #dem so luong nguoi dung
+    total_user = NguoiDung.objects.count()
+    # dem so don hang
+    total_order = DatHang.objects.count()
+    # tinh tong doanh thu tu cac don hang o tran thai giao hang thanh cong
+    total_revenue = 0
+    orders = DatHang.objects.filter(trang_thai_dat_hang='Giao hàng thành công')
+    for order in orders:
+        detail_orders = ChiTietDatHang.objects.filter(id_dat_hang=order)
+        for detail in detail_orders:
+            product = SanPham.objects.filter(id=detail.id_san_pham.id).first()
+            total_revenue = total_revenue + product.gia_san_pham * detail.so_luong
+    #dem so san pham
+    total_product = SanPham.objects.count()
+    #dem so don hang thanh cong 
+    total_order_success = DatHang.objects.filter(trang_thai_dat_hang='Giao hàng thành công').count()
+    #dem so don hang huy 
+    total_order_cancel = DatHang.objects.filter(trang_thai_dat_hang='Đã hủy').count()
+    context = {
+        'total_user': total_user,
+        'total_order': total_order,
+        'total_revenue': total_revenue,
+        'total_product': total_product,
+        'total_order_success': total_order_success,
+        'total_order_cancel': total_order_cancel
+    }
+    return render(request, 'manage_app/manage_report.html', context)
+
+# cập nhật trạng thái đơn hàng từ chờ xác nhận sang đã xác nhận
+def confirm_order(request, order_id):
+    check =  DatHang.objects.filter(id=order_id).update(trang_thai_dat_hang='Đã xác nhận')
+    if check:
+        messages.success(request, 'Xác nhận đơn hàng thành công!')
+    else:
+        messages.error(request, 'Xác nhận đơn hàng thất bại!')
+    return redirect('manage-order')
+
+# huy don hang
+def cancel_order(request, order_id):
+    #check dang nhap
+    if 'ID' not in request.session or request.session['vai_tro'] != 'admin': 
+        return redirect('login')
+    check =  DatHang.objects.filter(id=order_id).update(trang_thai_dat_hang='Đã hủy')
+    if check:
+        messages.success(request, 'Hủy đơn hàng thành công!')
+    else:
+        messages.error(request, 'Hủy đơn hàng thất bại!')
+    return redirect('manage-order')
+
+# user huy don hang cua minh
+def cancel_order_user(request, order_id):
+    #check dang nhap
+    if 'ID' not in request.session:
+        return redirect('login')
+    check =  DatHang.objects.filter(id=order_id).update(trang_thai_dat_hang='Đã hủy')
+    if check:
+        messages.success(request, 'Hủy đơn hàng thành công!')
+    else:
+        messages.error(request, 'Hủy đơn hàng thất bại!')
+    return redirect('state_order')
+
+# detail_order
+def detail_order(request, order_id):
+    #check dang nhap
+    if 'ID' not in request.session:
+        return redirect('login')
+    # lay tat ca san pham tu don hang dua vao id
+    products = ChiTietDatHang.objects.filter(id_dat_hang=order_id)
+    #tinh tong tien total_price
+    total_price = 0
+    for product in products:
+        total_price = total_price + product.id_san_pham.gia_san_pham * product.so_luong
+    #format total price
+    total_price = "{:,.2f}".format(total_price)
+     #dem so luong nguoi dung
+    total_user = NguoiDung.objects.count()
+    # dem so don hang
+    total_order = DatHang.objects.count()
+    # tinh tong doanh thu tu cac don hang o tran thai giao hang thanh cong
+    total_revenue = 0
+    orders = DatHang.objects.filter(trang_thai_dat_hang='Giao hàng thành công')
+    for order in orders:
+        detail_orders = ChiTietDatHang.objects.filter(id_dat_hang=order)
+        for detail in detail_orders:
+            product = SanPham.objects.filter(id=detail.id_san_pham.id).first()
+            total_revenue = total_revenue + product.gia_san_pham * detail.so_luong
+    #dem so san pham
+    total_product = SanPham.objects.count()
+    context = {
+        'products': products,
+        'total_price': total_price,
+        'total_user': total_user,
+        'total_order': total_order,
+        'total_revenue': total_revenue,
+        'total_product': total_product
+    }
+    return render(request, 'manage_app/detail_manage_product.html', context)
+
+
+
+# lay tat ca san pham tu don hang dua vao id
+def get_product_from_order(request, order_id):
+    # lay tat ca san pham tu don hang dua vao id
+    products = ChiTietDatHang.objects.filter(id_dat_hang=order_id)
+    context = {
+        'products': products
+    }
+    return render(request, 'manage_app/manage_order.html', context)
 
 def manage_category(request):
     if 'ID' not in request.session or request.session['vai_tro'] != 'admin':
@@ -277,8 +474,26 @@ def manage_category(request):
                 messages.error(request, 'Thêm loại sản phẩm mới thất bại!')
     # lay tat ca loai san pham
     categories = LoaiSanPham.objects.all()
+     #dem so luong nguoi dung
+    total_user = NguoiDung.objects.count()
+    # dem so don hang
+    total_order = DatHang.objects.count()
+    # tinh tong doanh thu tu cac don hang o tran thai giao hang thanh cong
+    total_revenue = 0
+    orders = DatHang.objects.filter(trang_thai_dat_hang='Giao hàng thành công')
+    for order in orders:
+        detail_orders = ChiTietDatHang.objects.filter(id_dat_hang=order)
+        for detail in detail_orders:
+            product = SanPham.objects.filter(id=detail.id_san_pham.id).first()
+            total_revenue = total_revenue + product.gia_san_pham * detail.so_luong
+    #dem so san pham
+    total_product = SanPham.objects.count()
     context = {
-        'categories': categories
+        'categories': categories,
+        'total_user': total_user,
+        'total_order': total_order,
+        'total_revenue': total_revenue,
+        'total_product': total_product
     }
     return render(request, 'manage_app/manage_category.html', context)
 
@@ -387,6 +602,7 @@ def cart_order(request):
             request.session['list_products_in_cart'] = []
             return redirect('state_order')
     return render(request, 'app/content.html')
+
 def state_order(request):
     context = {}
     # Kiểm tra xem người dùng có đăng nhập chưa
@@ -397,8 +613,8 @@ def state_order(request):
     id_nguoi_dung = request.session.get('ID')
     instance_nguoi_dung = NguoiDung.objects.filter(id=id_nguoi_dung).first()
     
-    # Tìm tất cả đơn hàng của người dùng ngoại trừ đơn hàng đã giao thành công
-    orders = DatHang.objects.filter(id_nguoi_dung=instance_nguoi_dung).exclude(trang_thai_dat_hang='Giao hàng thành công')
+    #tim tất cả đơn hàng đang ở trạng thái chờ xác nhận
+    orders = DatHang.objects.all().exclude(trang_thai_dat_hang='Giao hàng thành công')
     
     # Lấy thông tin chi tiết đơn hàng
     list_order = []
@@ -423,6 +639,7 @@ def state_order(request):
     
     return render(request, 'app/state_order.html', context)
     
+
 
 def logout(request):
     # xoa session
