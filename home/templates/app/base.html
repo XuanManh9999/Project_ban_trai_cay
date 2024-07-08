@@ -146,11 +146,14 @@ class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-5
           class="position-relative me-4 my-auto"
         >
           <i class="fa fa-shopping-bag fa-2x"></i>
-          <span
-            class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
-            style="top: -5px; left: 15px; height: 20px; min-width: 20px"
-            >{{total_quantity}}</span
-          >
+          <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
+          style="top: -5px; left: 15px; height: 20px; min-width: 20px">
+        {% if total_quantity %}
+            {{ total_quantity }}
+        {% else %}
+            0
+        {% endif %}
+    </span>
         </a>
         <div class="nav-item dropdown">
           <button
@@ -165,6 +168,7 @@ class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-5
             {% if request.session.email %}
               <!-- Hiển thị khi người dùng đã đăng nhập -->
               <li><a class="dropdown-item">{{request.session.ho_va_ten}}</a></li>
+              <li><a class="dropdown-item" href={%url 'state_order'%} >Đơn hàng của tôi</a></li>
               <li><a class="dropdown-item" href="/logout">Logout</a></li>
           {% else %}
               <!-- Hiển thị khi người dùng chưa đăng nhập -->
@@ -222,8 +226,10 @@ aria-hidden="true"
     {%block contact%}{%endblock%}
     {%block shopdetail%} {%endblock%}
     {%block shop%} {%endblock%}
+    {%block state_order%} {%endblock%}
+    
 <!-- Footer Start -->
-<div class="container-fluid bg-dark text-white-50 footer pt-5 mt-5">
+<div class="container-fluid bg-dark text-white-50 footer pt-5 mt-3">
   <div class="container py-5">
     <div
       class="pb-4 mb-4"
