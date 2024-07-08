@@ -99,9 +99,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='ChiTietDatHang',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                
+                ('id_dat_hang', models.ForeignKey(db_column='ID_dat_hang', on_delete=django.db.models.deletion.DO_NOTHING, to='home.dathang')),
+                ('id_san_pham', models.ForeignKey(db_column='ID_san_pham', on_delete=django.db.models.deletion.DO_NOTHING, to='home.sanpham')),
                 ('so_luong', models.IntegerField(blank=True, null=True)),
                 ('ghi_chu', models.TextField(blank=True, null=True)),
+                ('id_nguoi_dung', models.ForeignKey(db_column='ID_nguoi_dung', on_delete=django.db.models.deletion.DO_NOTHING, to='home.nguoidung')),
             ],
             options={
                 'db_table': 'chi_tiet_dat_hang',
@@ -118,6 +121,7 @@ class Migration(migrations.Migration):
                 ('ngay_them', models.DateTimeField()),
                 ('dia_chi', models.TextField(blank=True, null=True)),
                 ('sdt', models.CharField(blank=True, max_length=255, null=True)),
+                ('id_nguoi_dung', models.ForeignKey(db_column='ID_nguoi_dung', on_delete=django.db.models.deletion.DO_NOTHING, to='home.nguoidung')),
             ],
             options={
                 'db_table': 'dat_hang',

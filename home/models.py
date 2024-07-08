@@ -87,11 +87,13 @@ class AuthUserUserPermissions(models.Model):
 
 
 class ChiTietDatHang(models.Model):
+    id = models.AutoField(primary_key=True)
     id_nguoi_dung = models.ForeignKey('NguoiDung', models.DO_NOTHING, db_column='ID_nguoi_dung', blank=True, null=True)  # Field name made lowercase.
     id_san_pham = models.ForeignKey('SanPham', models.DO_NOTHING, db_column='ID_san_pham', blank=True, null=True)  # Field name made lowercase.
     so_luong = models.IntegerField(blank=True, null=True)
     ghi_chu = models.TextField(blank=True, null=True)
     id_dat_hang = models.ForeignKey('DatHang', models.DO_NOTHING, db_column='ID_dat_hang', blank=True, null=True)  # Field name made lowercase.
+
 
     class Meta:
         managed = False

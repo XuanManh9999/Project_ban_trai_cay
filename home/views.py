@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import NguoiDung, SanPham, LoaiSanPham
+from .models import NguoiDung, SanPham, LoaiSanPham, DatHang, ChiTietDatHang
 from django.shortcuts import render, redirect
 from django.contrib import messages
 # from home import 
@@ -171,6 +171,19 @@ def manage_user(request):
         'users': users
     }
     return render(request, 'manage_app/manage_user.html', context)
+#da-nhan-duoc-hang
+def da_nhan_hang(request, order_id):
+    #check dang nhap
+    if 'ID' not in request.session:
+        return redirect('login')
+    check =  DatHang.objects.filter(id=order_id).update(trang_thai_dat_hang='Giao hàng thành công')
+    if check:
+        messages.success(request, 'Đã nhận hàng thành công!')
+    else:
+        messages.error(request, 'Đã nhận hàng thất bại!')
+    return redirect('home')
+
+
 
 #delete user
 def delete_user(request, id):
@@ -197,13 +210,6 @@ def manage_product(request):
         quantity = request.POST.get('quantity')
         url = request.POST.get('url')
         type_product = request.POST.get('type_product')
-        print("id", id)
-        print("name", name)
-        print("price", price)
-        print("desc", desc)
-        print("quantity", quantity)
-        print("type_product", type_product)
-        print("url", url)
         if id != '':
             #cap nhat thong tin san pham
             check = SanPham.objects.filter(id=id).update(ten_san_pham=name, gia_san_pham=price, mo_ta_san_pham=desc, so_luong_san_pham=quantity, id_loai_san_pham=type_product, hinh_anh_san_pham=url)
@@ -349,6 +355,74 @@ def delete_product_in_cart(request, id):
     request.session['list_products_in_cart'] = list_cart
     # dieu huong ve trang gio hang
     return redirect('cart')
+
+
+def cart_order(request):
+    #kiem tra xem nguoi dung co dang nhap chua
+    if 'ID' not in request.session:
+        return redirect('login')
+    #kiem tra so luong san pham trong gio hang >= 1
+    list_cart = request.session.get('list_products_in_cart')
+    if list_cart is None or len(list_cart) == 0:
+        return redirect('checkout')
+    if request.method == 'POST':
+        #lay thong tin tu form
+        dia_chi = request.POST.get('address')
+        sdt = request.POST.get('phone')
+        ghi_chu = request.POST.get('note')
+        # them du lieu vao bang don hang
+        if request.session.get('ID') is not None:
+            id_nguoi_dung = request.session.get('ID')
+            instance_nguoi_dung = NguoiDung.objects.filter(id=id_nguoi_dung).first()
+            DatHang.objects.create(id_nguoi_dung=instance_nguoi_dung, dia_chi=dia_chi, sdt=sdt, ghi_chu=ghi_chu, trang_thai_dat_hang='Chờ xác nhận')
+            # lay id don hang vua them moi
+            order = DatHang.objects.latest('id')
+            #them du lieu vao bang chi tiet don hang
+            for item in list_cart:
+                instance_san_pham = SanPham.objects.filter(id=item['id']).first()
+                ChiTietDatHang.objects.create(id_dat_hang=order, id_san_pham=instance_san_pham, so_luong=item['quantity'], id_nguoi_dung=instance_nguoi_dung)
+            
+            messages.success(request, 'Đặt hàng thành công!')
+            # xoa session
+            request.session['list_products_in_cart'] = []
+            return redirect('state_order')
+    return render(request, 'app/content.html')
+def state_order(request):
+    context = {}
+    # Kiểm tra xem người dùng có đăng nhập chưa
+    if 'ID' not in request.session:
+        return redirect('login')
+    
+    # Lấy dữ liệu người dùng từ session
+    id_nguoi_dung = request.session.get('ID')
+    instance_nguoi_dung = NguoiDung.objects.filter(id=id_nguoi_dung).first()
+    
+    # Tìm tất cả đơn hàng của người dùng ngoại trừ đơn hàng đã giao thành công
+    orders = DatHang.objects.filter(id_nguoi_dung=instance_nguoi_dung).exclude(trang_thai_dat_hang='Giao hàng thành công')
+    
+    # Lấy thông tin chi tiết đơn hàng
+    list_order = []
+    for order in orders:
+        detail_orders = ChiTietDatHang.objects.filter(id_dat_hang=order)
+        for detail in detail_orders:
+            product = SanPham.objects.filter(id=detail.id_san_pham.id).first()
+            list_order.append({
+                'id': order.id,
+                'ten_san_pham': product.ten_san_pham,
+                'gia_san_pham': product.gia_san_pham,
+                'so_luong': detail.so_luong,
+                'dia_chi': order.dia_chi,
+                'sdt': order.sdt,
+                'trang_thai_dat_hang': order.trang_thai_dat_hang,
+                'thanh_tien': product.gia_san_pham * detail.so_luong
+            })
+    
+    context = {
+        'list_order': list_order
+    }
+    
+    return render(request, 'app/state_order.html', context)
+    
 
 def logout(request):
     # xoa session

@@ -5,11 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2d1af14f-5b22-4295-9a55-887b0d191800" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/home/templates/app/state_order.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Python_Web_Ban_Trai_Cay/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/Python_Web_Ban_Trai_Cay/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/home/templates/auth/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/auth/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/home/templates/manage_app/manage_product.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/manage_app/manage_product.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/home/tests.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/tests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/migrations/0001_initial.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/migrations/0001_initial.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/templates/app/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/app/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/templates/app/checkout.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/templates/app/checkout.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,7 +42,7 @@
     "RunOnceActivity.OpenDjangoStructureViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.pycharm.django.structure.promotion.once.per.project": "true",
-    "git-widget-placeholder": "Rebasing main",
+    "git-widget-placeholder": "Merging main",
     "last_opened_file_path": "D:/Python-Django/Project_ban_trai_cay",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -96,7 +99,7 @@
       <workItem from="1719286400735" duration="1903000" />
       <workItem from="1719293483742" duration="842000" />
       <workItem from="1719323103117" duration="17000" />
-      <workItem from="1720422510063" duration="2504000" />
+      <workItem from="1720422510063" duration="3475000" />
     </task>
     <servers />
   </component>
